@@ -1,0 +1,22 @@
+.listTodosComponent {
+    text-align: center;
+}
+
+.deleteButton {
+    background-color: #984161 !important;
+    padding: 0 7px !important;
+}
+
+.deleteButton:hover {
+    background-color: #bf4773 !important;
+}
+
+h4 {
+    padding: 20px 0;
+}
+
+.icon {
+    cursor: pointer;
+    font-size: 14px;
+    color: #444444;
+}

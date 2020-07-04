@@ -1,0 +1,17 @@
+.header {
+    width: 100%;
+}
+
+img {
+    max-height: 42px;
+    margin-right: 5px;
+}
+
+.navbar {
+    padding: 0.5rem 0.5rem;
+}
+
+.nav-link {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
