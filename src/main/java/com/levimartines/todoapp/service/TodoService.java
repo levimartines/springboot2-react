@@ -9,14 +9,15 @@ import com.levimartines.todoapp.service.auth.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class TodoService {
 
-    @Autowired
-    private TodoRepository repository;
+    private final TodoRepository repository;
 
     public List<Todo> getAll() {
         CustomUserDetails authUser = UserService.authenticated();
@@ -51,6 +52,7 @@ public class TodoService {
 
 
     public Todo add(Todo todo) {
+        todo.setId(null);
         todo.setUserId(UserService.getAuthUserId());
         repository.save(todo);
         return todo;
