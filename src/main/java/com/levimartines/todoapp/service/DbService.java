@@ -7,19 +7,28 @@ import com.levimartines.todoapp.repository.UserRepository;
 import java.time.LocalDate;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @Service
+@Slf4j
 public class DbService {
 
     private final BCryptPasswordEncoder pe;
     private final TodoRepository todoRepository;
     private final UserRepository userRepository;
+    @Value("${spring.profiles.active}")
+    private String profile;
 
     public void instantiateTestDatabase() {
+        if (!profile.equals("dev")) {
+            return;
+        }
+        log.info("##### INSTANCIANDO BASE DE DADOS #####");
         User user = new User(null, "admin", "admin@todos.com", pe.encode("admin"));
         User user2 = new User(null, "levi", "levi@gmail.com", pe.encode("levi"));
         userRepository.saveAll(Arrays.asList(user, user2));
