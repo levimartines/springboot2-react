@@ -2,7 +2,7 @@ package com.levimartines.todoapp.configuration;
 
 import com.levimartines.todoapp.security.JWTAuthenticationFilter;
 import com.levimartines.todoapp.security.JWTAuthorizationFilter;
-import com.levimartines.todoapp.security.JWTUtils;
+import com.levimartines.todoapp.util.JWTUtils;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

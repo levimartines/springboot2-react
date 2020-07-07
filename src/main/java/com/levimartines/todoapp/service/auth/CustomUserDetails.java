@@ -1,4 +1,4 @@
-package com.levimartines.todoapp.security;
+package com.levimartines.todoapp.service.auth;
 
 import java.util.Collection;
 import java.util.Collections;

@@ -1,5 +1,6 @@
 package com.levimartines.todoapp.security;
 
+import com.levimartines.todoapp.util.JWTUtils;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -40,7 +41,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(String token) {
-        if (jwtUtils.tokenValido(token)) {
+        if (jwtUtils.isTokenValid(token)) {
             String username = jwtUtils.getUsername(token);
             UserDetails user = userDetailsService.loadUserByUsername(username);
             return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());

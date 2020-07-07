@@ -1,6 +1,8 @@
-package com.levimartines.todoapp.security;
+package com.levimartines.todoapp.util;
 
 import com.levimartines.todoapp.constant.SecurityConstants;
+import com.levimartines.todoapp.exceptions.AuthorizationException;
+import com.levimartines.todoapp.service.auth.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -19,7 +21,7 @@ public class JWTUtils {
             .compact();
     }
 
-    public boolean tokenValido(String token) {
+    public boolean isTokenValid(String token) {
         Claims claims = getClaims(token);
         if (claims != null) {
             String username = claims.getSubject();
@@ -36,6 +38,31 @@ public class JWTUtils {
             return claims.getSubject();
         }
         return null;
+    }
+
+    public static Long getId() {
+        CustomUserDetails authUser = authenticated();
+        if (authUser != null) {
+            return authUser.getId();
+        }
+        throw new AuthorizationException("Acesso proibido.");
+    }
+
+    public static CustomUserDetails authenticated() {
+        try {
+            return (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static boolean isOwner(Long userId) {
+        CustomUserDetails authUser = authenticated();
+        if (authUser == null || !userId.equals(authUser.getId())) {
+            return false;
+        }
+        return true;
     }
 
     private static Claims getClaims(String token) {

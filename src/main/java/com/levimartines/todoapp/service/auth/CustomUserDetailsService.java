@@ -2,7 +2,6 @@ package com.levimartines.todoapp.service.auth;
 
 import com.levimartines.todoapp.model.User;
 import com.levimartines.todoapp.repository.UserRepository;
-import com.levimartines.todoapp.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

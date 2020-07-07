@@ -4,8 +4,8 @@ import com.levimartines.todoapp.exceptions.AuthorizationException;
 import com.levimartines.todoapp.exceptions.ObjectNotFoundException;
 import com.levimartines.todoapp.model.Todo;
 import com.levimartines.todoapp.repository.TodoRepository;
-import com.levimartines.todoapp.security.CustomUserDetails;
-import com.levimartines.todoapp.service.auth.UserService;
+import com.levimartines.todoapp.service.auth.CustomUserDetails;
+import com.levimartines.todoapp.util.JWTUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +20,7 @@ public class TodoService {
     private final TodoRepository repository;
 
     public List<Todo> getAll() {
-        CustomUserDetails authUser = UserService.authenticated();
+        CustomUserDetails authUser = JWTUtils.authenticated();
         if (authUser != null) {
             return repository.findAllByUserIdOrderByDueDateAsc(authUser.getId());
         }
@@ -33,7 +33,7 @@ public class TodoService {
             throw new ObjectNotFoundException("Objeto nao encontrado. Id: " + id);
         }
         Todo todo = optional.get();
-        if (!UserService.isOwner(todo.getUserId())) {
+        if (!JWTUtils.isOwner(todo.getUserId())) {
             throw new AuthorizationException("Acesso proibido.");
         }
         return todo;
@@ -53,7 +53,7 @@ public class TodoService {
 
     public Todo add(Todo todo) {
         todo.setId(null);
-        todo.setUserId(UserService.getAuthUserId());
+        todo.setUserId(JWTUtils.getId());
         repository.save(todo);
         return todo;
     }

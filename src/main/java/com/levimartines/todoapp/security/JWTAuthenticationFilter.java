@@ -3,6 +3,7 @@ package com.levimartines.todoapp.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.levimartines.todoapp.bean.LoginBean;
 import com.levimartines.todoapp.constant.SecurityConstants;
+import com.levimartines.todoapp.util.JWTUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
