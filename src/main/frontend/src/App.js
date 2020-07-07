@@ -12,6 +12,8 @@ import AuthenticatedRoute
   from "./components/AuthenticatedRoute/AuthenticatedRoute";
 import TodoComponent from "./components/Todos/TodoComponent";
 import AuthenticationService from "./services/AuthenticationService";
+import RegisterComponent
+  from "./components/RegisterComponent/RegisterComponent";
 
 function App() {
   AuthenticationService.setupAxiosInterceptors();
@@ -24,6 +26,7 @@ function App() {
           <Switch>
             <Route exact path="/" component={LoginComponent}/>
             <Route path="/login" component={LoginComponent}/>
+            <Route path="/signup" component={RegisterComponent}/>
             <AuthenticatedRoute exact path="/dashboard/:name"
                                 component={DashboardComponent}/>
             <AuthenticatedRoute exact path="/todos/:id" component={TodoComponent}/>

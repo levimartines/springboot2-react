@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import AuthenticationService from "../../services/AuthenticationService";
 import "./LoginComponent.css"
+import {Link} from "react-router-dom";
 
 class LoginComponent extends Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class LoginComponent extends Component {
   render() {
     return (
       <div className="login-form">
-        <br/><br/>
+        <br/>
         <form onSubmit={this.handleSubmit}>
           <label htmlFor="username">Username: </label>
           <input
@@ -38,11 +39,20 @@ class LoginComponent extends Component {
             value={this.state.password}
             onChange={this.handleChange}
           />
+          <br/>
           <button className="btn">Login</button>
         </form>
         <div className="errorContainer">
-          {this.state.hasLoginFailed && <p><strong>Invalid username or
-            password</strong></p>}
+          {
+            this.state.hasLoginFailed && <p><strong>Invalid username or
+              password</strong></p>
+          }
+        </div>
+        <br/><br/>
+        <div className="register">
+          <div>
+            Register a new Account <Link to={"/signup"}>here</Link> !
+          </div>
         </div>
 
       </div>
