@@ -54,7 +54,7 @@ class RegisterComponent extends Component {
               />
               <label htmlFor="confirmPassword">Confirm your password: </label>
               <input
-                type="confirmPassword"
+                type="password"
                 name="confirmPassword"
                 value={this.state.confirmPassword}
                 onChange={this.handleChange}
@@ -93,6 +93,9 @@ class RegisterComponent extends Component {
       email: email,
       password: password,
       confirmPassword: confirmPassword
+    }
+    if (password !== confirmPassword) {
+      return;
     }
     SignupService.registerUser(user).then(res => {
       AuthenticationService.tryLogin(login, password).then(res => {

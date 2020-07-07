@@ -2,6 +2,7 @@ package com.levimartines.todoapp.handler;
 
 
 import com.levimartines.todoapp.exceptions.AuthorizationException;
+import com.levimartines.todoapp.exceptions.InvalidRequestException;
 import com.levimartines.todoapp.exceptions.ObjectNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,15 @@ public class ResourceExceptionHandler {
             HttpStatus.FORBIDDEN.value(), "Forbidden",
             e.getMessage(), request.getRequestURI());
         return new ResponseEntity<>(err, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(InvalidRequestException.class)
+    public ResponseEntity<StandardError> validation(InvalidRequestException e,
+        HttpServletRequest request) {
+        StandardError err = new StandardError(System.currentTimeMillis(),
+            HttpStatus.UNPROCESSABLE_ENTITY.value(), "Validation error",
+            e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
     }
 
     @ExceptionHandler(AuthorizationException.class)

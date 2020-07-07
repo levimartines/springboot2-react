@@ -1,5 +1,6 @@
 package com.levimartines.todoapp.service;
 
+import com.levimartines.todoapp.exceptions.InvalidRequestException;
 import com.levimartines.todoapp.exceptions.ObjectNotFoundException;
 import com.levimartines.todoapp.model.User;
 import com.levimartines.todoapp.repository.UserRepository;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository repository;
+    private final BCryptPasswordEncoder pe;
 
     public List<User> getAll() {
         CustomUserDetails authUser = JWTUtils.authenticated();
@@ -45,9 +48,15 @@ public class UserService {
     }
 
 
-    public User add(User user) {
-        user.setId(null);
-        repository.save(user);
-        return user;
+    public User add(User userBean) {
+        User user = repository.findByLoginIgnoreCase(userBean.getLogin());
+        if (user != null) {
+            throw new InvalidRequestException("Login or email already exist");
+        }
+        userBean.setAdmin(false);
+        userBean.setId(null);
+        userBean.setPassword(pe.encode(userBean.getPassword()));
+        repository.save(userBean);
+        return userBean;
     }
 }

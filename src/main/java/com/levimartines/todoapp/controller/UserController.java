@@ -41,10 +41,7 @@ public class UserController {
     public EntityModel<User> getUser(@PathVariable String id) {
         User user = service.findById(Long.parseLong(id));
 
-        //"all-users", SERVER_PATH + "/users"
-        //retrieveAllUsers
         EntityModel<User> resource = EntityModel.of(user);
-
         WebMvcLinkBuilder linkTo =
             linkTo(methodOn(this.getClass()).getAll());
 
