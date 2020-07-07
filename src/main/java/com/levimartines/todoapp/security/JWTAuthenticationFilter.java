@@ -22,12 +22,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-    private final JWTUtils jwtUtils;
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtils jwtUtils) {
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
         setAuthenticationFailureHandler(new JWTAuthenticationFailureHandler());
         this.authenticationManager = authenticationManager;
-        this.jwtUtils = jwtUtils;
     }
 
     @Override
@@ -56,7 +54,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         HttpServletResponse res, FilterChain chain, Authentication auth) throws IOException {
 
         String login = auth.getName();
-        String token = jwtUtils.generateToken(login);
+        String token = JWTUtils.generateToken(login);
         String bearerToken = SecurityConstants.TOKEN_PREFIX + token;
         res.getWriter().write(bearerToken);
         res.addHeader(SecurityConstants.HEADER_AUTH, bearerToken);

@@ -2,7 +2,6 @@ package com.levimartines.todoapp.configuration;
 
 import com.levimartines.todoapp.security.JWTAuthenticationFilter;
 import com.levimartines.todoapp.security.JWTAuthorizationFilter;
-import com.levimartines.todoapp.util.JWTUtils;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -22,11 +22,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
-    private final JWTUtils jwtUtils;
 
     private static final String[] PUBLIC_MATCHERS = {
         "/h2-console/**"
@@ -41,9 +41,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             .antMatchers(PUBLIC_MATCHERS).permitAll()
             .anyRequest().authenticated();
-        http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtils));
+        http.addFilter(new JWTAuthenticationFilter(authenticationManager()));
         http.addFilter(
-            new JWTAuthorizationFilter(authenticationManager(), jwtUtils, userDetailsService));
+            new JWTAuthorizationFilter(authenticationManager(), userDetailsService));
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 

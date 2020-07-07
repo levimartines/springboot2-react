@@ -30,4 +30,7 @@ public class User implements Serializable {
     @Column(name = "USR_PASSWD")
     private String password;
 
+    @Column(name = "USR_ADMIN")
+    private boolean admin;
+
 }

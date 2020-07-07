@@ -5,6 +5,7 @@ import com.levimartines.todoapp.service.TodoService;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/todo")
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class TodoController {
 
-    @Autowired
-    private TodoService service;
+    private final TodoService service;
 
     @GetMapping
     public ResponseEntity<List<Todo>> getAll() {

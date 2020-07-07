@@ -1,7 +1,9 @@
 package com.levimartines.todoapp.service.auth;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,11 +21,20 @@ public class CustomUserDetails implements UserDetails {
     private String senha;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(Long id, String login, String senha) {
+    public CustomUserDetails(Long id, String login, String senha, boolean isAdmin) {
         this.id = id;
         this.login = login;
         this.senha = senha;
-        this.authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        this.authorities = buildAuthorities(isAdmin);
+    }
+
+    private Collection<? extends GrantedAuthority> buildAuthorities(boolean isAdmin) {
+        List<String> list = new ArrayList<>();
+        list.add("ROLE_CLIENT");
+        if (isAdmin) {
+            list.add("ROLE_ADMIN");
+        }
+        return list.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     @Override

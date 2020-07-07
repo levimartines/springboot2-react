@@ -29,8 +29,8 @@ public class DbService {
             return;
         }
         log.info("##### INSTANCIANDO BASE DE DADOS #####");
-        User user = new User(null, "admin", "admin@todos.com", pe.encode("admin"));
-        User user2 = new User(null, "levi", "levi@gmail.com", pe.encode("levi"));
+        User user = new User(null, "admin", "admin@todos.com", pe.encode("admin"), true);
+        User user2 = new User(null, "levi", "levi@gmail.com", pe.encode("levi"), false);
         userRepository.saveAll(Arrays.asList(user, user2));
         int plusDays = 5;
         Todo todo1 = new Todo(null, user.getId(), "Learn React", true, LocalDate.now());

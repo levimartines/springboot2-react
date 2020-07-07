@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JWTUtils {
 
-    public String generateToken(String username) {
+    public static String generateToken(String username) {
         return Jwts.builder()
             .setSubject(username)
             .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
@@ -21,7 +21,7 @@ public class JWTUtils {
             .compact();
     }
 
-    public boolean isTokenValid(String token) {
+    public static boolean isTokenValid(String token) {
         Claims claims = getClaims(token);
         if (claims != null) {
             String username = claims.getSubject();
