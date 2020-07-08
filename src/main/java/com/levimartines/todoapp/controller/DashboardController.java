@@ -1,5 +1,6 @@
 package com.levimartines.todoapp.controller;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -17,6 +18,7 @@ public class DashboardController {
     private final MessageSource messageSource;
 
     @GetMapping
+    @ApiOperation(value = "Get hello world message")
     public ResponseEntity<String> getHelloWorld() {
         return ResponseEntity.ok(messageSource.getMessage("dashboard.message", null,
             LocaleContextHolder.getLocale()));

@@ -1,5 +1,6 @@
 package com.levimartines.todoapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,6 +29,7 @@ public class User implements Serializable {
     private String email;
 
     @Column(name = "USR_PASSWD")
+    @JsonIgnore
     private String password;
 
     @Column(name = "USR_ADMIN")

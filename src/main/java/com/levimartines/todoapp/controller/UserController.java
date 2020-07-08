@@ -5,6 +5,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import com.levimartines.todoapp.model.User;
 import com.levimartines.todoapp.service.UserService;
+import io.swagger.annotations.ApiOperation;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -32,12 +33,14 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ApiOperation(value = "Returns all Users")
     public ResponseEntity<List<User>> getAll() {
         return ResponseEntity.ok(service.getAll());
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ApiOperation(value = "Find User by ID")
     public EntityModel<User> getUser(@PathVariable String id) {
         User user = service.findById(Long.parseLong(id));
 
@@ -53,12 +56,14 @@ public class UserController {
     }
 
     @PostMapping
+    @ApiOperation(value = "Create a User")
     public ResponseEntity<User> addUser(@RequestBody User User) throws URISyntaxException {
         service.add(User);
         return ResponseEntity.created(new URI(User.getId().toString())).build();
     }
 
     @PutMapping("/{id}")
+    @ApiOperation(value = "Update a User")
     public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody String email) {
         service.update(Long.parseLong(id), email);
         return ResponseEntity.noContent().build();
@@ -66,6 +71,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ApiOperation(value = "Delete a User")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         service.delete(Long.parseLong(id));
         return ResponseEntity.noContent().build();
