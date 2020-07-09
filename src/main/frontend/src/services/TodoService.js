@@ -3,7 +3,7 @@ import {API_URL} from "../Constants";
 
 class TodoService {
 
-  TODO_URL = API_URL + 'api/v1/todo/';
+  TODO_URL = API_URL + 'api/v1/todos/';
 
   getTodo(id) {
     return axios.get(this.TODO_URL + id);

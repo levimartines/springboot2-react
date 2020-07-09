@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/todo")
+@RequestMapping("/api/v1/todos")
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class TodoController {
 
