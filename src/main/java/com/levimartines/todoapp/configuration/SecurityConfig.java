@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -27,17 +28,21 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final Environment environment;
     private final UserDetailsService userDetailsService;
 
     private static final String[] PUBLIC_MATCHERS = {
-        "/h2-console/**"
+        "/h2-console/**",
+        "/actuator/**"
     };
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+        if (Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
+            http.headers().frameOptions().sameOrigin();
+        }
         http.cors().and().csrf().disable();
-        http.headers().frameOptions().sameOrigin();
         http.authorizeRequests()
             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             .antMatchers(PUBLIC_MATCHERS).permitAll()
