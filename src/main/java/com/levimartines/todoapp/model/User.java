@@ -2,11 +2,14 @@ package com.levimartines.todoapp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,5 +37,17 @@ public class User implements Serializable {
 
     @Column(name = "USR_ADMIN")
     private boolean admin;
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts;
+
+    public User(String login, String email, String password, boolean admin) {
+        this.login = login;
+        this.email = email;
+        this.password = password;
+        this.admin = admin;
+        this.posts = new ArrayList<>();
+    }
+
 
 }
