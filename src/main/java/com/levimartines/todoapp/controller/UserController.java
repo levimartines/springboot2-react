@@ -3,17 +3,23 @@ package com.levimartines.todoapp.controller;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.levimartines.todoapp.bean.UserBean;
 import com.levimartines.todoapp.model.User;
 import com.levimartines.todoapp.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,8 +40,19 @@ public class UserController {
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Returns all Users")
-    public ResponseEntity<List<User>> getAll() {
-        return ResponseEntity.ok(service.getAll());
+    public ResponseEntity<MappingJacksonValue> getAll() {
+
+        List<User> userList = service.getAll();
+        List<UserBean> beanList = userList.stream().map(UserBean::new)
+            .collect(Collectors.toList());
+
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter
+            .filterOutAllExcept("login", "email");
+        FilterProvider filters = new SimpleFilterProvider().addFilter("UserFilter", filter);
+        MappingJacksonValue mapping = new MappingJacksonValue(beanList);
+        mapping.setFilters(filters);
+
+        return ResponseEntity.ok(mapping);
     }
 
     @GetMapping("/{id}")
