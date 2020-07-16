@@ -27,7 +27,7 @@ public class DbService {
     private final Environment environment;
 
     public void instantiateTestDatabase() {
-        if (Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
+        if (!Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
             return;
         }
         log.info("##### STARTING H2 DATABASE #####");
